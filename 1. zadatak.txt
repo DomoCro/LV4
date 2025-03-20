@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <math.h>
+
+#define MAX 10
+
+struct tocka {
+    float x, y, z;
+};
+
+struct trokut {
+    struct tocka *t1, *t2, *t3;
+};
+
+float udaljenost(struct tocka *a, struct tocka *b) {
+    return sqrt(pow(b->x - a->x, 2) + pow(b->y - a->y, 2) + pow(b->z - a->z, 2));
+}
+
+float opseg(struct trokut *t) {
+    return udaljenost(t->t1, t->t2) + udaljenost(t->t2, t->t3) + udaljenost(t->t3, t->t1);
+}
+
+int main() {
+    int n, m, i, ind1, ind2, ind3;
+    struct tocka tocke[MAX];
+    struct trokut trokuti[MAX], *maxTrokut;
+    float maxOpseg = 0, trenutniOpseg;
+
+    scanf("%d %d", &n, &m);
+    for (i = 0; i < n; i++) {
+        scanf("%f %f %f", &tocke[i].x, &tocke[i].y, &tocke[i].z);
+    }
+
+    for (i = 0; i < m; i++) {
+        scanf("%d %d %d", &ind1, &ind2, &ind3);
+        trokuti[i].t1 = &tocke[ind1];
+        trokuti[i].t2 = &tocke[ind2];
+        trokuti[i].t3 = &tocke[ind3];
+        
+        trenutniOpseg = opseg(&trokuti[i]);
+        if (trenutniOpseg > maxOpseg) {
+            maxOpseg = trenutniOpseg;
+            maxTrokut = &trokuti[i];
+        }
+    }
+    printf("REZULTATI:\n%.2f\n", maxOpseg);
+    return 0;
+}
