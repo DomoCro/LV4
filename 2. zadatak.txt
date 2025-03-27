@@ -1,29 +1,47 @@
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
-#define MAX 10
+
 
 struct Artikl {
-    char ime[50];
+    char naziv[50];
     float cijena;
     int kolicina;
 };
 
-int main() {
-    int n, i;
-    struct Artikl artikli[MAX], *max;
+struct Racun {
+    char kupac[50];
+    char prodavac[50];
+    int brojArtikala;
+    struct Artikl artikli[10];
+};
 
-    scanf("%d", &n);
-    for (i = 0; i < n; i++) {
-        scanf("%s %d %f", artikli[i].ime, &artikli[i].kolicina, &artikli[i].cijena);
+void unesiPodatkeRacuna(struct Racun *r) {
+    scanf("%s", r->kupac);
+    scanf("%s", r->prodavac);
+    scanf("%d", &r->brojArtikala);
+    for (int i = 0; i < r->brojArtikala; i++) {
+        scanf("%s %f %d", r->artikli[i].naziv, &r->artikli[i].cijena, &r->artikli[i].kolicina);
     }
-    
-    max = &artikli[0];
-    for (i = 1; i < n; i++) {
-        if (artikli[i].cijena > max->cijena) {
-            max = &artikli[i];
-        }
+}
+
+void ispisiRacun(struct Racun r) {
+    printf("Kupac: %s\n", r.kupac);
+    printf("Prodavac: %s\n", r.prodavac);
+    printf("-----------------------------\n");
+    float ukupno = 0;
+    for (int i = 0; i < r.brojArtikala; i++) {
+        float suma = r.artikli[i].cijena * r.artikli[i].kolicina;
+        printf("%d. %s %d %.2f %.2f\n", i + 1, r.artikli[i].naziv, r.artikli[i].kolicina, r.artikli[i].cijena, suma);
+        ukupno += suma;
     }
-    printf("REZULTATI:\ncijena: %.2f, kolicina: %d\n", max->cijena, max->kolicina);
+    printf("Ukupan iznos racuna: %.2f\n", ukupno);
+}
+
+int main() {
+    struct Racun racun;
+    unesiPodatkeRacuna(&racun);
+    ispisiRacun(racun);
     return 0;
 }
