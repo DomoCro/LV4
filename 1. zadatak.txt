@@ -1,47 +1,58 @@
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 
-#define MAX 10
 
-struct tocka {
-    float x, y, z;
+struct Tocka {
+    int x, y;
 };
 
-struct trokut {
-    struct tocka *t1, *t2, *t3;
+struct Trokut {
+    struct Tocka a, b, c;
 };
 
-float udaljenost(struct tocka *a, struct tocka *b) {
-    return sqrt(pow(b->x - a->x, 2) + pow(b->y - a->y, 2) + pow(b->z - a->z, 2));
+void unesiTocke(struct Tocka tocke[], int n) {
+    for (int i = 0; i < n; i++) {
+        scanf("%d %d", &tocke[i].x, &tocke[i].y);
+    }
 }
 
-float opseg(struct trokut *t) {
-    return udaljenost(t->t1, t->t2) + udaljenost(t->t2, t->t3) + udaljenost(t->t3, t->t1);
+void unesiTrokute(struct Trokut trokuti[], int m) {
+    for (int i = 0; i < m; i++) {
+        scanf("%d %d %d %d %d %d", 
+              &trokuti[i].a.x, &trokuti[i].a.y, 
+              &trokuti[i].b.x, &trokuti[i].b.y, 
+              &trokuti[i].c.x, &trokuti[i].c.y);
+    }
+}
+
+double udaljenost(struct Tocka p1, struct Tocka p2) {
+    return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
+}
+
+double pronadjiNajveciOpseg(struct Trokut trokuti[], int m) {
+    double maxOpseg = 0;
+    for (int i = 0; i < m; i++) {
+        double opseg = udaljenost(trokuti[i].a, trokuti[i].b) +
+                       udaljenost(trokuti[i].b, trokuti[i].c) +
+                       udaljenost(trokuti[i].c, trokuti[i].a);
+        if (opseg > maxOpseg) {
+            maxOpseg = opseg;
+        }
+    }
+    return maxOpseg;
 }
 
 int main() {
-    int n, m, i, ind1, ind2, ind3;
-    struct tocka tocke[MAX];
-    struct trokut trokuti[MAX], *maxTrokut;
-    float maxOpseg = 0, trenutniOpseg;
-
+    int n, m;
     scanf("%d %d", &n, &m);
-    for (i = 0; i < n; i++) {
-        scanf("%f %f %f", &tocke[i].x, &tocke[i].y, &tocke[i].z);
-    }
-
-    for (i = 0; i < m; i++) {
-        scanf("%d %d %d", &ind1, &ind2, &ind3);
-        trokuti[i].t1 = &tocke[ind1];
-        trokuti[i].t2 = &tocke[ind2];
-        trokuti[i].t3 = &tocke[ind3];
-        
-        trenutniOpseg = opseg(&trokuti[i]);
-        if (trenutniOpseg > maxOpseg) {
-            maxOpseg = trenutniOpseg;
-            maxTrokut = &trokuti[i];
-        }
-    }
-    printf("REZULTATI:\n%.2f\n", maxOpseg);
+    struct Tocka tocke[n];
+    struct Trokut trokuti[m];
+    
+    unesiTocke(tocke, n);
+    unesiTrokute(trokuti, m);
+    
+    printf("%.2lf\n", pronadjiNajveciOpseg(trokuti, m));
+    
     return 0;
 }
