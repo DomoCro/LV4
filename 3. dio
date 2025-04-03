@@ -1,1 +1,21 @@
+#include <stdio.h>
+#include "myheader.h"
+
+void pomnoziMatricu(int redovi, int stupci, int matrica[redovi][stupci], int k, int rezultat[redovi][stupci]) {
+    for (int i = 0; i < redovi; i++) {
+        for (int j = 0; j < stupci; j++) {
+            rezultat[i][j] = matrica[i][j] * k;
+        }
+    }
+}
+
+void ispisiMatricu(int redovi, int stupci, int matrica[redovi][stupci]) {
+    printf("REZULTATI:\n");
+    for (int i = 0; i < redovi; i++) {
+        for (int j = 0; j < stupci; j++) {
+            printf("%d\t", matrica[i][j]);
+        }
+        printf("\n");
+    }
+}
 
