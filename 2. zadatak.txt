@@ -1,20 +1,30 @@
-#include <stdio.h>
 #include "myheader.h"
+#include <stdio.h>
 
-void pomnoziMatricu(int redovi, int stupci, int matrica[redovi][stupci], int k, int rezultat[redovi][stupci]) {
-    for (int i = 0; i < redovi; i++) {
-        for (int j = 0; j < stupci; j++) {
-            rezultat[i][j] = matrica[i][j] * k;
-        }
-    }
-}
+#include<stdlib.h>
 
-void ispisiMatricu(int redovi, int stupci, int matrica[redovi][stupci]) {
+int main(void)
+{
+	int **M=NULL;
+	int m, n, K;
+	printf("Unesi n i m: ");
+	//redoslijed unosa je n, m, K
+	scanf("%d%d", &n, &m);
+
+    printf("Unesi k: ");
+    scanf("%d", &K);
+
+
+	M = allocateMatrix(n, m);
+
+	inputMatrix(M, n, m);
+
+    matrixTimesK(M, n, m, K);
+
     printf("REZULTATI:\n");
-    for (int i = 0; i < redovi; i++) {
-        for (int j = 0; j < stupci; j++) {
-            printf("%d\t", matrica[i][j]);
-        }
-        printf("\n");
-    }
+    printMatrix(M, n, m);
+    
+    M = freeMemory(M, n);
+    
+	return 0;
 }
