@@ -1,47 +1,20 @@
 #include <stdio.h>
-#include <string.h>
-#include <math.h>
+#include "myheader.h"
 
-
-
-struct Artikl {
-    char naziv[50];
-    float cijena;
-    int kolicina;
-};
-
-struct Racun {
-    char kupac[50];
-    char prodavac[50];
-    int brojArtikala;
-    struct Artikl artikli[10];
-};
-
-void unesiPodatkeRacuna(struct Racun *r) {
-    scanf("%s", r->kupac);
-    scanf("%s", r->prodavac);
-    scanf("%d", &r->brojArtikala);
-    for (int i = 0; i < r->brojArtikala; i++) {
-        scanf("%s %f %d", r->artikli[i].naziv, &r->artikli[i].cijena, &r->artikli[i].kolicina);
+void pomnoziMatricu(int redovi, int stupci, int matrica[redovi][stupci], int k, int rezultat[redovi][stupci]) {
+    for (int i = 0; i < redovi; i++) {
+        for (int j = 0; j < stupci; j++) {
+            rezultat[i][j] = matrica[i][j] * k;
+        }
     }
 }
 
-void ispisiRacun(struct Racun r) {
-    printf("Kupac: %s\n", r.kupac);
-    printf("Prodavac: %s\n", r.prodavac);
-    printf("-----------------------------\n");
-    float ukupno = 0;
-    for (int i = 0; i < r.brojArtikala; i++) {
-        float suma = r.artikli[i].cijena * r.artikli[i].kolicina;
-        printf("%d. %s %d %.2f %.2f\n", i + 1, r.artikli[i].naziv, r.artikli[i].kolicina, r.artikli[i].cijena, suma);
-        ukupno += suma;
+void ispisiMatricu(int redovi, int stupci, int matrica[redovi][stupci]) {
+    printf("REZULTATI:\n");
+    for (int i = 0; i < redovi; i++) {
+        for (int j = 0; j < stupci; j++) {
+            printf("%d\t", matrica[i][j]);
+        }
+        printf("\n");
     }
-    printf("Ukupan iznos racuna: %.2f\n", ukupno);
-}
-
-int main() {
-    struct Racun racun;
-    unesiPodatkeRacuna(&racun);
-    ispisiRacun(racun);
-    return 0;
 }
