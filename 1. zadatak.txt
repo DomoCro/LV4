@@ -1,7 +1,10 @@
-#ifndef MYHEADER_H
-#define MYHEADER_H
+#ifndef FUNCTIONS_H
+#define FUNCTIONS_H
 
-void pomnoziMatricu(int redovi, int stupci, int matrica[redovi][stupci], int k, int rezultat[redovi][stupci]);
-void ispisiMatricu(int redovi, int stupci, int matrica[redovi][stupci]);
+int** allocateMatrix(int, int);
+void inputMatrix(int**, int, int);
+void printMatrix(int**, int, int);
+int  matrixTimesK(int**, int, int, int);
+int** freeMemory(int**, int);
 
 #endif
