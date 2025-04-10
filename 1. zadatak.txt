@@ -1,10 +1,25 @@
-#ifndef FUNCTIONS_H
-#define FUNCTIONS_H
+#include <stdio.h>
+#include <ctype.h>
 
-int** allocateMatrix(int, int);
-void inputMatrix(int**, int, int);
-void printMatrix(int**, int, int);
-int  matrixTimesK(int**, int, int, int);
-int** freeMemory(int**, int);
+int main() {
+    FILE *ulaz = fopen("Prva.txt", "r");
+    FILE *izlaz = fopen("Druga.txt", "w");
 
-#endif
+    if (ulaz == NULL || izlaz == NULL) {
+        printf("Greska pri otvaranju datoteka.\n");
+        return 1;
+    }
+
+    char znak;
+    while ((znak = fgetc(ulaz)) != EOF) {
+        if (islower(znak))
+            znak = toupper(znak);
+        else if (isupper(znak))
+            znak = tolower(znak);
+        fputc(znak, izlaz);
+    }
+
+    fclose(ulaz);
+    fclose(izlaz);
+    return 0;
+}
