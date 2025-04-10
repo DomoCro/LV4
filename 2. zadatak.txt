@@ -1,30 +1,25 @@
-#include "myheader.h"
 #include <stdio.h>
 
-#include<stdlib.h>
+int main() {
+    FILE *dat = fopen("Dat.txt", "r");
+    FILE *out = fopen("Studenti.txt", "w");
 
-int main(void)
-{
-	int **M=NULL;
-	int m, n, K;
-	printf("Unesi n i m: ");
-	//redoslijed unosa je n, m, K
-	scanf("%d%d", &n, &m);
+    if (dat == NULL || out == NULL) {
+        printf("Greska pri otvaranju datoteka.\n");
+        return 1;
+    }
 
-    printf("Unesi k: ");
-    scanf("%d", &K);
+    int n;
+    fscanf(dat, "%d", &n);
+    fclose(dat);
 
+    char ime[50], prezime[50];
 
-	M = allocateMatrix(n, m);
+    for (int i = 0; i < n; i++) {
+        scanf("%s %s", ime, prezime);
+        fprintf(out, "%s %s\n", ime, prezime);
+    }
 
-	inputMatrix(M, n, m);
-
-    matrixTimesK(M, n, m, K);
-
-    printf("REZULTATI:\n");
-    printMatrix(M, n, m);
-    
-    M = freeMemory(M, n);
-    
-	return 0;
+    fclose(out);
+    return 0;
 }
