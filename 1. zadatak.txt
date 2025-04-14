@@ -1,25 +1,57 @@
 #include <stdio.h>
-#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
 
-int main() {
-    FILE *ulaz = fopen("Prva.txt", "r");
-    FILE *izlaz = fopen("Druga.txt", "w");
+typedef struct {
+    char prezime[30];
+    char ime[30];
+    int sifra;
+    char adresa[50];
+    char telefon[20];
+} Clan;
 
-    if (ulaz == NULL || izlaz == NULL) {
-        printf("Greska pri otvaranju datoteka.\n");
-        return 1;
+void kreirajDatoteku() {
+    FILE *f = fopen("clanovi.dat", "wb");
+    if (!f) {
+        printf("Greška pri kreiranju datoteke!\n");
+        return;
+    }
+    fclose(f);
+    printf("Datoteka 'clanovi.dat' kreirana.\n");
+}
+
+void citajDatoteku() {
+    FILE *f = fopen("clanovi.dat", "rb");
+    Clan c;
+    if (!f) {
+        printf("Datoteka ne postoji.\n");
+        return;
     }
 
-    char znak;
-    while ((znak = fgetc(ulaz)) != EOF) {
-        if (islower(znak))
-            znak = toupper(znak);
-        else if (isupper(znak))
-            znak = tolower(znak);
-        fputc(znak, izlaz);
+    while (fread(&c, sizeof(Clan), 1, f)) {
+        printf("Prezime: %s, Ime: %s, Šifra: %d, Adresa: %s, Telefon: %s\n",
+               c.prezime, c.ime, c.sifra, c.adresa, c.telefon);
+    }
+    fclose(f);
+}
+
+void dodajClanove() {
+    FILE *f = fopen("clanovi.dat", "ab");
+    if (!f) {
+        printf("Greška pri otvaranju datoteke.\n");
+        return;
     }
 
-    fclose(ulaz);
-    fclose(izlaz);
-    return 0;
+    int n;
+    printf("Koliko članova želite dodati: ");
+    scanf("%d", &n);
+    Clan c;
+
+    for (int i = 0; i < n; i++) {
+        printf("Unesite prezime, ime, šifru, adresu, telefon:\n");
+        scanf("%s %s %d %s %s", c.prezime, c.ime, &c.sifra, c.adresa, c.telefon);
+        fwrite(&c, sizeof(Clan), 1, f);
+    }
+
+    fclose(f);
 }
