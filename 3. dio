@@ -1,38 +1,24 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 int main() {
-    FILE *in = fopen("in.txt", "r");
-    FILE *out = fopen("out.txt", "w");
+    int izbor;
+    do {
+        printf("\n--- IZBORNIK ---\n");
+        printf("1. Kreiraj datoteku clanovi.dat\n");
+        printf("2. Čitaj iz datoteke clanovi.dat\n");
+        printf("3. Dodaj nove članove\n");
+        printf("4. Posudba filma\n");
+        printf("5. Izlaz\n");
+        printf("Izbor: ");
+        scanf("%d", &izbor);
 
-    if (in == NULL || out == NULL) {
-        printf("Greska pri otvaranju datoteka.\n");
-        return 1;
-    }
-
-    int m, n;
-    fscanf(in, "%d %d", &m, &n);
-    fclose(in);
-
-    float **mat = (float **)malloc(m * sizeof(float *));
-    for (int i = 0; i < m; i++)
-        mat[i] = (float *)malloc(n * sizeof(float));
-
-    for (int i = 0; i < m; i++)
-        for (int j = 0; j < n; j++)
-            scanf("%f", &mat[i][j]);
-
-    for (int i = 0; i < m - 1; i++) {
-        for (int j = 1; j < n; j++) {
-            fprintf(out, "%.2f", mat[i][j]);
-            if (j < n - 1) fprintf(out, " ");
+        switch (izbor) {
+            case 1: kreirajDatoteku(); break;
+            case 2: citajDatoteku(); break;
+            case 3: dodajClanove(); break;
+            case 4: posudbaFilma(); break;
+            case 5: printf("Izlaz iz programa.\n"); break;
+            default: printf("Nepoznata opcija.\n");
         }
-        fprintf(out, "\n");
-    }
+    } while (izbor != 5);
 
-    for (int i = 0; i < m; i++)
-        free(mat[i]);
-    free(mat);
-    fclose(out);
     return 0;
 }
