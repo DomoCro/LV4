@@ -1,25 +1,45 @@
-#include <stdio.h>
+typedef struct {
+    char naziv[50];
+    int dan_posudbe;
+    int sifra_clana;
+} Posudba;
 
-int main() {
-    FILE *dat = fopen("Dat.txt", "r");
-    FILE *out = fopen("Studenti.txt", "w");
+int brojPosudbiZaClana(int sifra) {
+    FILE *f = fopen("posudbe.dat", "rb");
+    if (!f) return 0;
+    Posudba p;
+    int brojac = 0;
+    while (fread(&p, sizeof(Posudba), 1, f)) {
+        if (p.sifra_clana == sifra) brojac++;
+    }
+    fclose(f);
+    return brojac;
+}
 
-    if (dat == NULL || out == NULL) {
-        printf("Greska pri otvaranju datoteka.\n");
-        return 1;
+void posudbaFilma() {
+    FILE *f = fopen("posudbe.dat", "ab+");
+    if (!f) {
+        printf("Greška pri otvaranju datoteke posudbi.\n");
+        return;
     }
 
-    int n;
-    fscanf(dat, "%d", &n);
-    fclose(dat);
+    int broj;
+    printf("Koliko filmova želite posuditi (max 4): ");
+    scanf("%d", &broj);
+    if (broj > 4) broj = 4;
 
-    char ime[50], prezime[50];
+    for (int i = 0; i < broj; i++) {
+        Posudba p;
+        printf("Unesite naziv filma, datum posudbe (1-365), šifra člana:\n");
+        scanf("%s %d %d", p.naziv, &p.dan_posudbe, &p.sifra_clana);
 
-    for (int i = 0; i < n; i++) {
-        scanf("%s %s", ime, prezime);
-        fprintf(out, "%s %s\n", ime, prezime);
+        int vec_posudio = brojPosudbiZaClana(p.sifra_clana);
+        if (vec_posudio >= 4) {
+            printf("Član već ima maksimalan broj posudbi.\n");
+        } else {
+            fwrite(&p, sizeof(Posudba), 1, f);
+        }
     }
 
-    fclose(out);
-    return 0;
+    fclose(f);
 }
